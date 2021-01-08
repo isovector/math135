@@ -117,4 +117,40 @@ begin
   exact hprime,
 end
 
+-- this should be defined over ℤ
+theorem bounds_by_divisibility
+    {a b : ℕ} (a_divs_b : a ∣ b) (b_neq_0 : b ≠ 0)
+    : a ≤ b :=
+begin
+  refine le_of_dvd _ a_divs_b,
+  by_contradiction,
+  have b_leq_0 : b ≤ 0 := by linarith,
+  finish,
+end
+
+theorem div_trans
+    {a b c : ℕ} (a_divs_b : a ∣ b) (b_divs_c : b ∣ c)
+    : a ∣ c :=
+begin
+  cases a_divs_b with k hk,
+  cases b_divs_c with i hi,
+  refine dvd.intro _ _,
+  use k * i,
+  finish,
+end
+
+theorem div_of_int_combo
+    {a b c : ℕ} (a_divs_b : a ∣ b) (b_divs_c : b ∣ c)
+    : ∀ x y, a ∣ (b * x + c * y) :=
+begin
+  intros x y,
+  cases a_divs_b with k hk,
+  cases b_divs_c with i hi,
+  refine dvd.intro _ _,
+  use (k*x + k*i*y),
+  rw hi,
+  repeat {rw hk},
+  linarith,
+end
+
 end lecture4
