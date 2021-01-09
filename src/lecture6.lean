@@ -23,21 +23,6 @@ begin
   exact nat.odd_iff_not_even.mp h,
 end
 
-lemma eq_intersect_union_one_contains_other 
-    {α} 
-    {s t : set α} 
-    (union_eq_inter : s ∪ t = s ∩ t)
-    : s ⊆ t := 
-begin
-  rw set.subset_def,
-  intros x x_in_s,
-  have s_in_union : s ⊆ s ∪ t := subset_union_left s t,
-  have intersect_in_t : s ∩ t ⊆ t := inter_subset_right s t,
-  refine mem_of_subset_of_mem intersect_in_t _,
-  rw ← union_eq_inter,
-  refine mem_of_subset_of_mem s_in_union _,
-  exact x_in_s,
-end
 
 example : Π {α : Type} (s t : set α), s = t ↔ s ∪ t = s ∩ t :=
 begin
