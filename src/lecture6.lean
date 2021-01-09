@@ -1,4 +1,5 @@
 import tactic
+import data.nat.parity
 import data.set
 import data.set.basic
 
@@ -6,7 +7,29 @@ namespace lecture6
 
 open set
 
--- example :  {n | 4 ∣ n + 1} ⊆ {k | 2 * k + 1} := by sorry
+lemma factor_2 (a : ℕ) {b c} {h : a * b ∣ c} : b ∣ c :=
+begin
+  exact dvd_of_mul_left_dvd h,
+end
+
+example : {n | 4 ∣ n + 1} ⊆ {k | odd k} := 
+begin
+  rw set.subset_def,
+  intros x hx,
+  simp at hx,
+  simp,
+  cases nat.even_or_odd x,
+  {
+    have h' : even (x + 1) := begin
+      refine even_iff_two_dvd.mpr _,
+      convert factor_2 2,
+      exact hx,
+    end,
+    refine nat.even_succ.symm.mpr _,
+    exact h',
+  },
+  exact nat.odd_iff_not_even.mp h,
+end
 
 lemma eq_intersect_union_one_contains_other 
     {α} 
