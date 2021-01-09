@@ -15,7 +15,7 @@ begin
   simp,
   cases nat.even_or_odd x,
   {
-    refine nat.even_succ.symm.mpr _,
+    apply nat.even_succ.symm.mpr,
     refine dvd_of_mul_left_dvd _,
     use 2,
     exact hx,
@@ -45,34 +45,18 @@ begin
   split,
   {
     intro s_eq_t,
-    refine ext _,
-    intro x,
-    split,
-    {
-      intro x_in_union,
-      rw s_eq_t at *,
-      rw union_self at x_in_union,
-      rw inter_self,
-      exact x_in_union,
-    },
-    intro x_in_inter,
-    rw s_eq_t at *,
-    rw union_self,
-    rw inter_self at x_in_inter,
-    exact x_in_inter,
+    rw [s_eq_t, union_self, inter_self],
   },
   intro union_eq_intersect,
-  
-  have s_in_t : s ⊆ t := eq_intersect_union_one_contains_other union_eq_intersect,
-  have t_in_s : t ⊆ s := 
-  begin
-    refine eq_intersect_union_one_contains_other _,
-    rw union_comm,
-    rw inter_comm,
-    exact union_eq_intersect,
-  end,
-
-  exact le_antisymm s_in_t t_in_s,
+  apply le_antisymm,
+  {
+    calc s ⊆ s ∪ t : subset_union_left s t
+    ...    = s ∩ t  : union_eq_intersect
+    ...    ⊆ t     : inter_subset_right s t,
+  },
+  calc t ⊆ s ∪ t : subset_union_right s t
+  ...    = s ∩ t  : union_eq_intersect
+  ...    ⊆ s     : inter_subset_left s t,
 end
 
 
