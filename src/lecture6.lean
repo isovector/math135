@@ -16,7 +16,6 @@ begin
   cases nat.even_or_odd x,
   {
     refine nat.even_succ.symm.mpr _,
-    refine even_iff_two_dvd.mpr _,
     refine dvd_of_mul_left_dvd _,
     use 2,
     exact hx,
