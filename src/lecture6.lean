@@ -7,11 +7,6 @@ namespace lecture6
 
 open set
 
-lemma factor_2 (a : ℕ) {b c} {h : a * b ∣ c} : b ∣ c :=
-begin
-  exact dvd_of_mul_left_dvd h,
-end
-
 example : {n | 4 ∣ n + 1} ⊆ {k | odd k} := 
 begin
   rw set.subset_def,
@@ -20,13 +15,11 @@ begin
   simp,
   cases nat.even_or_odd x,
   {
-    have h' : even (x + 1) := begin
-      refine even_iff_two_dvd.mpr _,
-      convert factor_2 2,
-      exact hx,
-    end,
     refine nat.even_succ.symm.mpr _,
-    exact h',
+    refine even_iff_two_dvd.mpr _,
+    refine dvd_of_mul_left_dvd _,
+    use 2,
+    exact hx,
   },
   exact nat.odd_iff_not_even.mp h,
 end
