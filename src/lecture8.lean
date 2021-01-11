@@ -3,7 +3,7 @@ import data.nat.basic
 import data.nat.prime
 
 
-namespace lecture7
+namespace lecture8
 
 open nat
 
@@ -18,4 +18,10 @@ begin
   exact not_dvd_3 h,
 end
 
-end lecture7
+-- non-trivial to prove before week 5 :(
+lemma euclid_lemma {a b c : ℕ} {hprime : prime a} (h : a ∣ (b * c)) : a ∣ b ∨ a ∣ c :=
+begin
+  sorry
+end
+
+end lecture8
