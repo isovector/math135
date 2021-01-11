@@ -17,9 +17,7 @@ lemma not_coprime_if_even {a b : ℕ} (even_a : even a) (even_b : even b) : ¬ (
 begin
   intro h_coprime,
   rw [coprime] at h_coprime,
-  have two_div_coprime : 2 ∣ gcd a b := begin
-    exact dvd_gcd even_a even_b,
-  end,
+  have two_div_coprime : 2 ∣ gcd a b := dvd_gcd even_a even_b,
   rw h_coprime at two_div_coprime,
   finish,
 end
@@ -53,23 +51,23 @@ begin
 
   have h' : n^2 = 2 * d^2 := 
   begin
-    have x : coe n = real.sqrt 2 * coe d := begin
+    have x' : (coe n)^2 = (real.sqrt 2)^2 * (coe d)^2 := 
+    begin
+      refine tactic.ring_exp.pow_pp_pf_prod _ rfl rfl,
       refine (div_eq_iff _).mp h,
       exact cast_ne_zero.mpr d_neq_zero,
     end,
-    have x' : (coe n)^2 = (real.sqrt 2)^2 * (coe d)^2 := 
-      tactic.ring_exp.pow_pp_pf_prod x rfl rfl,
     rw real.sqr_sqrt at x',
     assumption_mod_cast,
     norm_num,
   end,
-  
+
   have even_pow_n_2 : even (n^2) := begin
     refine even_iff_two_dvd.mpr _,
     finish,
   end,
 
-  have even_n : even n := even_iff_even_square.mpr even_pow_n_2,
+  have even_n  : even n := even_iff_even_square.mpr even_pow_n_2,
   have even_n' : even n := even_n,
 
   cases even_n with k hk,
